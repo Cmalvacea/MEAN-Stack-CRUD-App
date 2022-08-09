@@ -26,14 +26,7 @@ namespace DBControl {
         }
     }
 
-    public void GetTasks() {
-        var Client = new MongoClient("mongodb://localhost:27017");
-        var DataB = Client.GetDatabase("D-NET-DB");
-        var Collection = DataB.GetCollection<BsonDocument>("Tasks");
-        var DocumentList = Collection.Find(new BsonDocument()).ToListAsync();
-        System.Console.WriteLine(DocumentList);
-
-    }
+ 
 
     public void UpdateTaskForName(string OldName, string NewName) {
         var Client = new MongoClient("mongodb://localhost:27017");

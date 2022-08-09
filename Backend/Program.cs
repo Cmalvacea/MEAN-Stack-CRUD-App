@@ -1,17 +1,38 @@
 using Microsoft.OpenApi.Models;
 using DBControl;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using System;
+using Newtonsoft.Json;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 var NewController = new CRUD_Control();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.WithOrigins("http://localhost:5500");
+                      });
+});
+
 
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins);
 
 
+var Client = new MongoClient("mongodb://localhost:27017");
+var DataB = Client.GetDatabase("D-NET-DB");
+var Collection = DataB.GetCollection<BsonDocument>("Tasks");
 
 
-
-
+app.MapGet("/Task", () => {
+    var DList = Collection.Find(new BsonDocument()).ToList();
+    var SList = JsonConvert.SerializeObject(DList);
+    return SList;
+});
 
 app.MapPost("/Task/{Name}/{Details}", (String Name, String Details) => {
     try
@@ -65,6 +86,8 @@ app.MapPut("/Task/UpdateDetails/{name}/{newDetails}", (string name, string NewDe
         Results.Text("Task updated succesfully");
     }
 });
+
+
 
 app.Run();
 
