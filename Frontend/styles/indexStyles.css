@@ -1,0 +1,58 @@
+body {
+  background-color: #302d34;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='105' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23000000' fill-opacity='0.45'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.Title {
+  background-color: #9b9b9b;
+  font-family: 'Roboto Condensed', sans-serif;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.Task_Container {
+  width: 95%;
+  margin: auto;
+  margin-top: 15%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (25%)[4];
+      grid-template-columns: repeat(4, 25%);
+  padding: 15px;
+}
+
+.Task_Container .Task_Preview {
+  padding: 10px;
+  background-color: #ebebeb;
+  -webkit-box-shadow: 3px 3px 6px #444444;
+          box-shadow: 3px 3px 6px #444444;
+  border-radius: 10px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.Task_Container .Task_Preview div {
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 5px;
+}
+
+.Task_Container .Task_Preview div button {
+  cursor: pointer;
+  background-color: gray;
+  border-radius: 6px;
+  color: gainsboro;
+  border: none;
+  padding: 5px;
+}
+/*# sourceMappingURL=indexStyles.css.map */
