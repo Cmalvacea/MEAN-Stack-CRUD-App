@@ -9,19 +9,136 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     <title>Angular Front</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
 <body>
-    <div class="Title"><h1> DotNet/Angular CRUD </h1></div>
-    <div class="Task_Container">
-        <div class="Task_Preview">
-            <h1>Task Name</h1>
-            <h3>Task Details</h3>
+    <div class="LockScreen" id="LockScreen2">
+        <form action="" id="UpdateForm">
+            <input type="text" name="PatientID" id="PatientID" placeholder="Patient ID">
+            <textarea name="NewDiag" id="NewDiag" cols="30" rows="10" placeholder="New diagnosis"></textarea>
+            <button type="submit">Update</button>
+        </form>
+        <button class="CloseButton" id="CloseScreen">Close</button>
+    </div>
+    <div class="LockScreen" id="LockScreen">
+        <form action="" id="Patient_Form">
+            <input required type="text" name="Patient_Name" id="Patient_Name" placeholder="Patient name">
+            <div class="Patient_Details">
+                <input required type="number" id="Patient_Age" placeholder="Age">
+                <input required type="number" id="Patient_Weight" placeholder="Weight">
+                <input required type="number" id="Patient_Height" placeholder="Height">
+                <input required type="text" id="Patient_Gender" placeholder="Gender">
+            </div>
+            <textarea required name="Task_Details" id="Patient_Diagnosis" cols="30" rows="10">Diagnosis</textarea>
+            <button type="submit">Create</button>
+        </form>
+        <button class="CloseButton" id="CloseScreen2">Close</button>
+    </div>
+    <div class="Title"><h1> DotNet/Angular CRUD</h1> <button id="DisplayLock">Insert patient</button> <button id="DisplayLock2">Update diagnosis</button></div>
+    <div class="Task_Container" ng-app="MyApp" ng-controller="MyCtrl">
+        <div class="Task_Preview" ng-repeat="x in Patients">
+            <div class="Patient_ID">
+                <h1>{{ x.Name }}</h1>
+                <li style="list-style:none">{{x.PersonalID}}</li>
+            </div>
+            <div class="Patient_Det">
+                <li>Gender: {{x.Gender}}</li>
+                <li>Age: {{x.Age}}</li>
+                <li>Weight: {{x.Weight}}</li>
+                <li>Height: {{x.Height}}</li>
+            </div>
+            <div class="Patient_Diag">
+                <p>{{ x.Diagnosis }}</p>
+            </div>
             <div class="Task_Options">
-                <button>Update name</button>
-                <button>Update details</button>
-                <button>Delete task</button>
+                <button ng-click="Erase(x.PersonalID)">Delete Patient</button>
             </div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        var app = angular.module("MyApp", [])
+        app.controller("MyCtrl", async ($scope, $http) => {
+            $http.get("http://localhost:3000/Patients").then(response => {
+                $scope.Patients = response.data
+            })
+            $scope.Erase = function(arg) {
+                axios.delete("http://localhost:3000/Patients", {id: arg}).then(res => {
+                    alert(res.data)
+                }).catch(err => {
+                    alert("This task does not exist")
+                })
+            }
+            $scope.UpdateDiagnosis = function(arg) {
+
+            }
+        })
+
+        var DPL2 = document.getElementById("DisplayLock2")
+        var DPL = document.getElementById("DisplayLock")
+        var LockScreen = document.getElementById("LockScreen")
+        var LockScreen2 = document.getElementById("LockScreen2")
+        var CloseScreen = document.getElementById("CloseScreen")
+        var CloseScreen2 = document.getElementById("CloseScreen2")
+        DPL2.addEventListener("click", () => {
+            LockScreen.style.display = "none"
+            LockScreen2.style.display = "block"
+        })
+        DPL.addEventListener("click", () => {
+            LockScreen2.style.display = "none"
+            LockScreen.style.display = "block"
+        })
+        CloseScreen.addEventListener("click", () => {
+            LockScreen.style.display = "none"
+            LockScreen2.style.display = "none"
+        })
+        CloseScreen2.addEventListener("click", () => {
+            LockScreen.style.display = "none"
+            LockScreen2.style.display = "none"
+        })
+
+        /* Creation form */
+
+        var P_Name = document.getElementById("Patient_Name")
+        var P_Age = document.getElementById("Patient_Age")
+        var P_Weight = document.getElementById("Patient_Weight")
+        var P_Height = document.getElementById("Patient_Height")
+        var P_Gender = document.getElementById("Patient_Gender")
+        var P_Diagnosis = document.getElementById("Patient_Diagnosis")
+
+        const MyForm = document.getElementById('Patient_Form')
+        MyForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            axios.post("http://localhost:3000/Patients", {
+                name: P_Name.value,
+                age: P_Age.value,
+                weight: P_Weight.value,
+                height: P_Height.value,
+                gender: P_Gender.value,
+                diagnosis: P_Diagnosis.value
+            }).then(response => {
+                console.log(response.data)
+                alert(response.data)
+            }).catch(err => {
+                alert("Sorry, we could not insert the patient in the database, please try again")
+            })
+        })
+
+        /* Update form */
+
+        const UpdateForm = document.getElementById("UpdateForm")
+        const UpdateInput = document.getElementById("PatientID")
+        const UpdateDiag = document.getElementById("NewDiag")
+        UpdateForm.addEventListener("submit", (e)=> {
+            e.preventDefault()
+            axios.put("http://localhost:3000/Patients", {data: {id: UpdateInput.value, newdiag: UpdateDiag}}).then(res => {
+                alert(res.data)
+            }).catch(err => {
+                alert("The patient could not be updated, please try again")
+            })
+        })
+    </script>
 </body>
 </html>
