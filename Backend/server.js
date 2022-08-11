@@ -54,10 +54,13 @@ app.route("/Patients")
 .put(async (req, res) => {
     var Filter = {"PersonalID": req.body.id}
     var Update = {"Diagnosis": req.body.newdiag}
-    await Patient.updateOne(Filter, Update, (err, data) => {
-        if(err) throw err, res.status(404);
-        res.status(200).end("Patient updated")
-    })
+    var NewRecord = await Patient.updateOne(Filter, Update, {new: true})
+    if(!NewRecord) {
+        res.status(404)
+    } else {
+        res.status(201).end("The patient has been updated")
+    }
+
 })
 .delete(async (req, res) => {
     var Filter = {"PersonalID": req.body.id}

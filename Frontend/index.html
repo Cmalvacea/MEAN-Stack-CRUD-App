@@ -65,14 +65,11 @@
                 $scope.Patients = response.data
             })
             $scope.Erase = function(arg) {
-                axios.delete("http://localhost:3000/Patients", {id: arg}).then(res => {
+                axios.delete("http://localhost:3000/Patients", { data: {id: arg}}).then(res => {
                     alert(res.data)
                 }).catch(err => {
-                    alert("This task does not exist")
+                    alert("There was an error, please try again")
                 })
-            }
-            $scope.UpdateDiagnosis = function(arg) {
-
             }
         })
 
@@ -133,7 +130,7 @@
         const UpdateDiag = document.getElementById("NewDiag")
         UpdateForm.addEventListener("submit", (e)=> {
             e.preventDefault()
-            axios.put("http://localhost:3000/Patients", {data: {id: UpdateInput.value, newdiag: UpdateDiag}}).then(res => {
+            axios.put("http://localhost:3000/Patients", {id: UpdateInput.value, newdiag: UpdateDiag.value}).then(res => {
                 alert(res.data)
             }).catch(err => {
                 alert("The patient could not be updated, please try again")
